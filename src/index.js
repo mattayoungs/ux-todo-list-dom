@@ -16,35 +16,45 @@ let todos = [
     description: "Call the caterers",
   },
 ];
-
+function renderTodoItem(item, list) {
+  li = document.createElement("li");
+  li.style.listStyle = "none";
+  let isChecked = item.completed ? "checked" : "";
+  li.innerHTML = `
+          <input ${isChecked} type="checkbox" name="item" id="item" />
+          <label for="item">${item.description}</label>
+          `;
+  list.appendChild(li);
+}
 function renderTodoApp() {
   let app = document.querySelector("#app");
   let h1 = document.createElement("h1");
-  // your code here
   let list = document.createElement("ul");
+  h1.innerText = "Todo List";
 
   for (let item of todos) {
-    li = document.createElement("li");
-    li.style.listStyle = "none";
-    li.innerHTML = `
-      <input type="checkbox" name="item" id="item" />
-      <label for="item">${item.description}</label>
-      `;
-    if (item.completed === true) {
-      li.innerHTML = `
-      <input checked type="checkbox" name="item" id="item" />
-      <label for="item">${item.description}</label>
-      `;
-    }
-    //CHECK TO SEE IF COMPLETED IS T F
-    // if t checkbox is checked
-    list.appendChild(li);
+    renderTodoItem(item, list);
   }
-  h1.innerText = "Todo List";
 
   app.appendChild(h1);
   app.appendChild(list);
-  // and maybe some here
 }
 
 renderTodoApp();
+
+const todoBtn = document.querySelector("#todo-btn");
+let todoFeild = document.querySelector("#todo-feild");
+const todoForm = document.querySelector("#todo-form");
+
+todoBtn.onclick = (event) => {
+  event.preventDefault();
+  let inputValue = todoFeild.value;
+  let task = {
+    completed: false,
+    description: inputValue,
+  };
+  let list = document.querySelector("ul");
+  todos.push(task);
+  renderTodoItem(task, list);
+  todoForm.reset();
+};
